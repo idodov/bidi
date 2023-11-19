@@ -15,7 +15,7 @@ The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmw
 4. VSCode (add-on)
 5. AppDaemon (add-on)
 6. Fonts
-## 
+## Installation 
 1. Download the fonts and place them inside your ESPHome directory.
 2. Get everything ready with EspHoMaTriXv2 - https://github.com/lubeda/EspHoMaTriXv2
 3. Adjust the clock YAML file with the new font and glyphs. 
