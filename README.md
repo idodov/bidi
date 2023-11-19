@@ -1,6 +1,5 @@
-# RTL Language Display on LED Matrix with Bidi Algorithm and AppDaemon
-A sample solution for rendering right-to-left languages on LED matrix screens, employing the bidirectional algorithm and leveraging AppDaemon
-
+# RTL Language Display on LED Matrix (EspHoMaTriXv2) with Bidi Algorithm and AppDaemon
+A sample solution for rendering right-to-left languages on LED matrix screens, employing the bidirectional algorithm and leveraging AppDaemon and EspHoMaTriXv2.
 ### The Issue
 When utilizing the LED display (such as the Ulanzi clock with ESPHome32), sending Latin-based text poses no problems. However, complications arise when the text string includes non-Latin characters like Hebrew, Arabic (and other languages requiring the bidi algorithm). In such cases, the text displays in reverse order. The root cause is the lack of native support for these languages in the ESPHome32 system.
 While reversing the text may resolve the problem, it introduces a new issue when the text includes numbers or Latin characters.
@@ -15,3 +14,101 @@ The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmw
 3. Home Assistant (with add-ons)
 4. VSCode (add-on)
 5. AppDaemon (add-on)
+6. Fonts
+## 
+1. Download the fonts and place them inside your ESPHome directory.
+2. Adjust the clock YAML file with the new font and glyphs. For example:
+```yaml
+font:
+  - file: hebpixel.ttf
+    size: 16
+    id: default_font
+    glyphs:  |
+      !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnÖÄÜöäüèéēøopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
+  - file: hebehmtx.ttf
+    size: 16
+    id: special_font
+    glyphs:  |
+      !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
+```
+3. Flash the **EspHoMaTriXv2** firmware - https://github.com/lubeda/EspHoMaTriXv2
+4. From the add-on store, install **AppDaemon.**
+5. On the AppDaemon configuration page, add the **python-bidi** package.
+```yaml
+system_packages: []
+python_packages:
+  - python-bidi
+init_commands: []
+```
+5. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on)
+
+***Before pasting the code, make sure to adjust it to your personal needs.***
+This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as *"media_player.era300"* Adjust this to reflect the actual entity name you are using.
+```py
+import bidi
+from appdaemon.plugins.hass import hassapi as hass
+from bidi.algorithm import get_display
+
+class BidiConverter(hass.Hass):
+
+    def initialize(self):
+        self.listen_state(self.update_attributes, "media_player.era300", attribute='media_title')
+
+    def update_attributes(self, entity, attribute, old, new, kwargs):
+        bidi_title = get_display(self.get_state("media_player.era300", attribute="media_title"))
+        bidi_artist = get_display(self.get_state("media_player.era300", attribute="media_artist"))
+        bidi_album = get_display(self.get_state("media_player.era300", attribute="media_album_name"))
+        new_attributes = {
+            "media_artist_bidi": bidi_artist,
+            "media_title_bidi": bidi_title,
+            "media_album_name_bidi": bidi_album 
+        }
+
+        self.set_state("sensor.bidi", attributes=new_attributes)
+```
+6. Open app.yaml file from the appdaemon directory and add this lines:
+```yaml
+bidiconverter:
+  module: bidiconverter
+  class: BidiConverter
+```
+## sensor.bidi
+The next time a song is played, a new Home Assistant sensor named **sensor.bidi** will be generated. The sensor state will consistently be "on", and it should be disregarded.
+
+The "sensor.bidi" will include three attributes, focusing solely on right-to-left languages and ignoring Latin characters or numbers. 
+**This means that any given text string will be displayed correctly on the LED matrix strings, regardless of the language used.**
+* **media_title_bidi:** Reflecting the title of the song.
+* **media_artist_bidi:** Indicating the name of the artist.
+* **media_album_name_bidi:** Describing the album name.
+
+### Example Data sensor.bidi
+```yaml
+media_artist_bidi: הטיפש
+media_title_bidi: הסייד הלשיב אתבס
+media_album_name_bidi: הסייד הלשיב אתבס REMIX
+```
+### Example Automation
+```yaml
+description: "Display Song & Artist Name"
+mode: single
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.bidi
+    attribute: media_title_bidi
+condition: []
+action:
+  - service: esphome.ulanzi_rainbow_text_screen
+    enabled: true
+    data:
+      default_font: true
+      text: >-
+        {{ state_attr('sensor.bidi', 'media_artist_bidi') }} - {{
+        state_attr('sensor.bidi', 'media_title_bidi') }}
+      lifetime: >-
+        {{ (state_attr('media_player.era300', 'media_duration') |
+        float(default=0) / 1) | int(default=1) if
+        state_attr('media_player.era300', 'media_duration') is not none else 60
+        }}
+      screen_time: 50
+```
