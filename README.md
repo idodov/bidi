@@ -12,9 +12,10 @@ The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmw
 1. Ulanzi clock - https://a.aliexpress.com/_olGoYGb
 2. EspHoMaTriXv2 firmware - https://github.com/lubeda/EspHoMaTriXv2
 3. Home Assistant (with add-ons)
-4. VSCode (add-on)
-5. AppDaemon (add-on)
-6. Fonts
+4. ESPHome (add-on)
+5. VSCode (add-on)
+6. AppDaemon (add-on)
+7. Fonts
 ## Installation 
 1. Download the fonts and place them inside your ESPHome directory.
 2. Get everything ready with EspHoMaTriXv2 - https://github.com/lubeda/EspHoMaTriXv2
