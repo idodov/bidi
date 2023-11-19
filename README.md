@@ -71,12 +71,13 @@ class BidiConverter(hass.Hass):
 
         self.set_state("sensor.bidi", attributes=new_attributes)
 ```
-8. Open app.yaml file from the appdaemon directory and add this lines:
+8. Open app.yaml file from the AppDaemon directory and add this code:
 ```yaml
 bidiconverter:
   module: bidiconverter
   class: BidiConverter
 ```
+9. Restart AppDaemon
 ## sensor.bidi
 The next time a song is played, a new Home Assistant sensor named **sensor.bidi** will be generated. The sensor state will consistently be "on", and it should be disregarded.
 
