@@ -48,7 +48,7 @@ init_commands: []
 
 ***Before pasting the code, make sure to adjust it to your personal needs.***
 
-This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300` Adjust this to reflect the actual entity name you are using.
+This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300`. Adjust this to reflect the actual entity name you are using.
 ```py
 import bidi
 from appdaemon.plugins.hass import hassapi as hass
