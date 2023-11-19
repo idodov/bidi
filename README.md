@@ -44,9 +44,7 @@ python_packages:
   - python-bidi
 init_commands: []
 ```
-7. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on)
-
-***Before pasting the code, make sure to adjust it to your personal needs.***
+7. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on) and paste the code (***Before pasting the code, make sure to adjust it to your personal needs***).
 
 This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300`. Adjust this to reflect the actual entity name you are using.
 ```py
