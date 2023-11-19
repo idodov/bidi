@@ -109,9 +109,6 @@ action:
         {{ state_attr('sensor.bidi', 'media_artist_bidi') }} - {{
         state_attr('sensor.bidi', 'media_title_bidi') }}
       lifetime: >-
-        {{ (state_attr('media_player.era300', 'media_duration') |
-        float(default=0) / 1) | int(default=1) if
-        state_attr('media_player.era300', 'media_duration') is not none else 60
-        }}
+{{ (state_attr('media_player.era300', 'media_duration') | float(default=0) / 60) | int(default=1) if state_attr('media_player.era300', 'media_duration') is not none else 60 }}
       screen_time: 50
 ```
