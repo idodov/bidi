@@ -19,7 +19,9 @@ I have incorporated two special fonts for this project. If you're seeking inspir
 6. Fonts
 ## 
 1. Download the fonts and place them inside your ESPHome directory.
-2. Adjust the clock YAML file with the new font and glyphs. For example:
+2. Get everything ready with EspHoMaTriXv2 - https://github.com/lubeda/EspHoMaTriXv2
+3. Adjust the clock YAML file with the new font and glyphs. 
+For example:
 ```yaml
 font:
   - file: hebpixel.ttf
@@ -33,19 +35,20 @@ font:
     glyphs:  |
       !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
 ```
-3. Flash the **EspHoMaTriXv2** firmware - https://github.com/lubeda/EspHoMaTriXv2
-4. From the add-on store, install **AppDaemon.**
-5. On the AppDaemon configuration page, add the **python-bidi** package.
+4. Flash the **EspHoMaTriXv2** firmware
+5. From the add-on store, install **AppDaemon.**
+6. On the AppDaemon configuration page, add the **python-bidi** package.
 ```yaml
 system_packages: []
 python_packages:
   - python-bidi
 init_commands: []
 ```
-5. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on)
+7. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on)
 
 ***Before pasting the code, make sure to adjust it to your personal needs.***
-This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as *"media_player.era300"* Adjust this to reflect the actual entity name you are using.
+
+This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300` Adjust this to reflect the actual entity name you are using.
 ```py
 import bidi
 from appdaemon.plugins.hass import hassapi as hass
@@ -68,7 +71,7 @@ class BidiConverter(hass.Hass):
 
         self.set_state("sensor.bidi", attributes=new_attributes)
 ```
-6. Open app.yaml file from the appdaemon directory and add this lines:
+8. Open app.yaml file from the appdaemon directory and add this lines:
 ```yaml
 bidiconverter:
   module: bidiconverter
