@@ -7,9 +7,7 @@ While reversing the text may resolve the problem, it introduces a new issue when
 For my personal use, when I am listening to music on a Sonos speaker via a music service, I display the artist's name and the song title on the clock. Some of the songs have Hebrew titles or artist names, and certain titles are a mix of Hebrew, Latin, or numerical characters, making simple string reversal impractical.
 This script and method serve as my solution to address this issue. Please adjust the script according to your individual requirements.
 
-The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmware seamlessly integrates with Home Assistant, and I selected it primarily because of its flexibility in allowing font customization. In the context of this project, I've updated two specific fonts to include Hebrew characters.
-
-I have incorporated two special fonts for this project. If you're seeking inspiration or additional fonts, you can explore more options on the following GitHub repository: https://github.com/trip5/Matrix-Fonts
+The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmware seamlessly integrates with Home Assistant, and I selected it primarily because of its flexibility in allowing font customization. In the context of this project, I have incorporated two special Hebrew fonts. If you're seeking inspiration or additional fonts, you can explore more options on the following GitHub repository: https://github.com/trip5/Matrix-Fonts
 ## Things You Need
 1. Ulanzi clock - https://a.aliexpress.com/_olGoYGb
 2. EspHoMaTriXv2 firmware - https://github.com/lubeda/EspHoMaTriXv2
