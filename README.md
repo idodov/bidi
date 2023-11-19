@@ -1,5 +1,5 @@
 # RTL Language Display on LED Matrix (EspHoMaTriXv2) with Bidi Algorithm and AppDaemon
-A sample solution for rendering right-to-left languages on LED matrix screens, employing the bidirectional algorithm and leveraging AppDaemon and EspHoMaTriXv2.
+A sample solution for rendering right-to-left languages on LED matrix screens, employing the bidirectional algorithm and leveraging AppDaemon and EspHoMaTriXv2. With the script any given text string will be displayed correctly on the LED matrix strings, regardless of the language used.
 ### The Issue
 When utilizing the LED display (such as the Ulanzi clock with ESPHome32), sending Latin-based text poses no problems. However, complications arise when the text string includes non-Latin characters like Hebrew, Arabic (and other languages requiring the bidi algorithm). In such cases, the text displays in reverse order. The root cause is the lack of native support for these languages in the ESPHome32 system.
 While reversing the text may resolve the problem, it introduces a new issue when the text includes numbers or Latin characters.
