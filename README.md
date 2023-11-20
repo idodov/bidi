@@ -66,7 +66,7 @@ class BidiConverter(hass.Hass):
             "media_album_name_bidi": bidi_album 
         }
 
-        self.set_state("sensor.bidi", attributes=new_attributes)
+        self.set_state("sensor.bidi", state="on", attributes=new_attributes)
 ```
 8. Open app.yaml file from the AppDaemon directory and add this code:
 ```yaml
