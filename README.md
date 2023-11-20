@@ -19,7 +19,7 @@ The firmware I utilize is EspHoMaTriXv2, a highly recommended choice. This firmw
 ## Installation 
 1. Download the fonts and place them inside your ESPHome directory.
 2. Get everything ready with EspHoMaTriXv2 - https://github.com/lubeda/EspHoMaTriXv2
-3. Adjust the clock YAML file with the new font and glyphs. 
+3. Adjust the Led matrix YAML file with the new font and glyphs. 
 For example:
 ```yaml
 font:
@@ -33,6 +33,15 @@ font:
     id: special_font
     glyphs:  |
       !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
+
+........
+
+ehmtxv2:
+  default_font_id: default_font
+  default_font_yoffset: 6
+  special_font_id: special_font
+
+
 ```
 4. Flash the **EspHoMaTriXv2** firmware
 5. From the add-on store, install **AppDaemon.**
