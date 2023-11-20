@@ -33,15 +33,12 @@ font:
     id: special_font
     glyphs:  |
       !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
-
-........
-
+```
+```yaml
 ehmtxv2:
   default_font_id: default_font
   default_font_yoffset: 6
   special_font_id: special_font
-
-
 ```
 4. Flash the **EspHoMaTriXv2** firmware
 5. From the add-on store, install **AppDaemon.**
