@@ -1,5 +1,7 @@
 # RTL Language Display on LED Matrix (EspHoMaTriXv2) with Bidi Algorithm and AppDaemon
-A sample solution for rendering right-to-left languages on LED matrix screens, employing the bidirectional algorithm and leveraging AppDaemon and EspHoMaTriXv2. With the script any given text string will be displayed correctly on the LED matrix strings, regardless of the language used.
+This script is a practical solution for displaying text on LED matrix screens. It uses the bidirectional algorithm and unidecode and integrates with AppDaemon (and EspHoMaTriXv2 in example beyond). Regardless of the language, the script ensures that any text string is correctly displayed on the LED matrix screens. It also converts special characters to their Latin equivalents. For example, names like Beyoncé and Björk are converted to Beyonce and Bjork, respectively.
+
+The script monitors changes in a media player’s title in Home Assistant. If the title, album name, or artist name contains bidirectional characters (such as Arabic or Hebrew), the script converts the text for appropriate display. If not, it converts the text to ASCII. The converted text is then updated as attributes of a sensor entity in Home Assistant. This ensures that the text is correctly displayed in the Home Assistant interface when using LED Matrix screens.
 ### The Issue
 When utilizing the LED display (such as the Ulanzi clock with ESPHome32), sending Latin-based text poses no problems. However, complications arise when the text string includes non-Latin characters like Hebrew, Arabic, Persian (Farsi), Urdu, Kurdish and Dhivehi (Maldivian). In such cases, the text displays in reverse order. The root cause is the lack of native support for these languages in the ESPHome32 system.
 While reversing the text may resolve the problem, it introduces a new issue when the text includes numbers or Latin characters.
@@ -42,37 +44,65 @@ ehmtxv2:
 ```
 4. Flash the **EspHoMaTriXv2** firmware
 5. From the add-on store, install **AppDaemon.**
-6. On the AppDaemon configuration page, add the **python-bidi** package.
+6. On the AppDaemon configuration page, add the **python-bidi** and **unidecode** package.
 ```yaml
 system_packages: []
 python_packages:
   - python-bidi
+  - unidecode
 init_commands: []
 ```
 7. In the AppDaemon app directory (addons_config/appdaemon/apps), create a file named **bidiconverter.py** (with VSCode add-on) and paste the code (***Before pasting the code, make sure to adjust it to your personal needs***).
 
 This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300`. Adjust this to reflect the actual entity name you are using.
 ```py
+import re
 import bidi
+import time
 from appdaemon.plugins.hass import hassapi as hass
 from bidi.algorithm import get_display
+from unidecode import unidecode
+
+PLAYER = "media_player.era300"
+SENSOR = "sensor.bidi"
 
 class BidiConverter(hass.Hass):
 
     def initialize(self):
-        self.listen_state(self.update_attributes, "media_player.era300", attribute='media_title')
+        self.listen_state(self.update_attributes, PLAYER, attribute='media_title')
 
     def update_attributes(self, entity, attribute, old, new, kwargs):
-        bidi_title = get_display(self.get_state("media_player.era300", attribute="media_title"))
-        bidi_artist = get_display(self.get_state("media_player.era300", attribute="media_artist"))
-        bidi_album = get_display(self.get_state("media_player.era300", attribute="media_album_name"))
+        for _ in range(100):  # Retry up to 100 times
+            try:
+                title = self.get_state(PLAYER, attribute="media_title") or ""
+                album = self.get_state(PLAYER, attribute="media_album_name") or self.get_state(PLAYER, attribute="media_channel") or ""
+                artist = self.get_state(PLAYER, attribute="media_artist") or self.get_state(PLAYER, attribute="media_title") or ""
+                break  # Exit the loop if successful
+            except:
+                self.log("Failed to get media info, retrying...")
+                time.sleep(0.5)
+        else:
+            self.log("Failed to get media info after 100 retries.")
+            return
+
+        # Convert to bidi or unidecode
+        bidi_title = self.convert_text(title)
+        bidi_album = self.convert_text(album)
+        bidi_artist = self.convert_text(artist)
+        
         new_attributes = {
             "media_artist_bidi": bidi_artist,
             "media_title_bidi": bidi_title,
-            "media_album_name_bidi": bidi_album 
+            "media_album_name_bidi": bidi_album
         }
 
-        self.set_state("sensor.bidi", state="on", attributes=new_attributes)
+        self.set_state(SENSOR, state="on", attributes=new_attributes)
+
+    def convert_text(self, text):
+        return get_display(text) if text and self.has_bidi(text) else unidecode(text) if text else ""
+
+    def has_bidi(self, text):
+        return bool(re.search('[\u0590-\u08FF]', text)) if text else False
 ```
 8. Open app.yaml file from the AppDaemon directory and add this code:
 ```yaml
