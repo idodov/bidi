@@ -56,6 +56,7 @@ init_commands: []
 
 This script will execute each time the "media_title" attribute changes. Please update the "media_player" entity to match your specific entity name. In the provided example, the entity name is set as `media_player.era300`. Adjust this to reflect the actual entity name you are using.
 ```py
+#bidiconverter.py
 import re
 import bidi
 import time
@@ -93,7 +94,10 @@ class BidiConverter(hass.Hass):
         new_attributes = {
             "media_artist_bidi": bidi_artist,
             "media_title_bidi": bidi_title,
-            "media_album_name_bidi": bidi_album
+            "media_album_name_bidi": bidi_album,
+            "media_artist_original": artist,
+            "media_title_original": title,
+            "media_album_name_original": album
         }
 
         self.set_state(SENSOR, state="on", attributes=new_attributes)
@@ -102,7 +106,9 @@ class BidiConverter(hass.Hass):
         return get_display(text) if text and self.has_bidi(text) else unidecode(text) if text else ""
 
     def has_bidi(self, text):
-        return bool(re.search('[\u0590-\u08FF]', text)) if text else False
+            # covering Arabic, Hebrew and other RTL ranges
+            bidi_regex = r"[\u0590-\u08FF]|[\u0600-\u06FF]|\u0700-\u074F|\u0750-\u077F|\u0780-\u07A6|\u08A0-\u08FF|\uFB50-\uFDFF|\uFE70-\uFEFF|\U00010E60-\U00010E7F|\U0001EE00-\U0001EEFF|\U0001F110-\U0001F5FF|\U00010F00-\U00010FFF|\u0621-\u06FF|\u0800-\u08FF|\u200E|\u200F"
+            return bool(re.search(bidi_regex, text))
 ```
 8. Open app.yaml file from the AppDaemon directory and add this code:
 ```yaml
