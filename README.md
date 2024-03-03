@@ -160,7 +160,7 @@ trigger:
   - platform: state
     entity_id:
       - sensor.bidi
-    attribute: media_title_bidi
+    attribute: media_title
 condition: []
 action:
   - service: esphome.ulanzi_rainbow_text_screen
