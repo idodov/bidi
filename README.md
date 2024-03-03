@@ -40,14 +40,14 @@ ________________
 1. Download the fonts and place them inside your ESPHome directory.
 2. Get everything ready with EspHoMaTriXv2 - https://github.com/lubeda/EspHoMaTriXv2
 3. Adjust the Led matrix YAML file with the new font and glyphs. 
-For example:
+For example adding Hebrew support:
 ```yaml
 font:
   - file: hebpixel.ttf
     size: 16
     id: default_font
     glyphs:  |
-      !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnÖÄÜöäüèéēøopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
+      !?'"%&[]()+*=,-_.:°0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyzאבגדהוזחטיכךלמםנןסעפףצץקרשת@$<>|\/
   - file: hebehmtx.ttf
     size: 16
     id: special_font
