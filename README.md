@@ -174,7 +174,3 @@ action:
         {{ (state_attr('media_player.era300', 'media_duration') | float(default=0) / 60) | int(default=1) if state_attr('media_player.era300', 'media_duration') is not none else 60 }}
       screen_time: 50
 ```
-**Additional Information:**
-- Explore more fonts for LED matrices: [https://github.com/trip5/Matrix-Fonts](https://github.com/trip5/Matrix-Fonts)
-- Learn more about bidirectional text: [https://pypi.org/project/python-bidi/](https://pypi.org/project/python-bidi/)
-- Get familiar with unidecode: [https://pypi.org/project/Unidecode/](https://pypi.org/project/Unidecode/)
