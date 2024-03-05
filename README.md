@@ -1,20 +1,17 @@
-# Clear Display of RTL Languages on LED Matrix
-This script ensures correct text display on LED matrices, regardless of language, using the bidirectional algorithm and `unidecode`. It integrates seamlessly with AppDaemon and supports the EspHoMaTriXv2 firmware.
+# Clear Display of LTR & RTL Languages on LED Matrix
+This script guarantees accurate text display on LED matrixes, irrespective of the language, by utilizing the bidirectional algorithm or unidecode. It integrates flawlessly with AppDaemon and is compatible with the EspHoMaTriXv2 firmware, as well as any other LED Matrix firmware that supports custom fonts. **It’s also useful if you simply need to employ unidecode.**
 
 **Key Features:**
-- Supports all languages, including RTL scripts like Arabic, Hebrew, etc.
-- Integrates `bidi` for proper bidirectional text handling.
+- Supports all languages, including RTL scripts like Arabic, Hebrew, etc. Integrates `bidi` for proper bidirectional text handling.
 - Leverages `unidecode` for special character conversion (e.g., "Björk" -> "Bjork").
 - Seamless AppDaemon integration.
 
 **How It Works:**
 1. Monitors the media player's title in Home Assistant.
-2. Identifies bidirectional text (RTL languages).
-3. Applies `unidecode` for special characters.
-4. Converts and updates the text for LED matrix display.
+2. Identifies bidirectional text (RTL languages) or applies `unidecode` for special characters.
+3. Converts and updates the text for LED matrix display.
 
 **Examples:**
-
 * **Bidirectional Algorithm:** "مرحبا بك" (Arabic for "Welcome") is correctly arranged for right-to-left display.
 * **Unidecode:**
   *   Beyoncé: Converted to Beyonce due to the accented "é".
@@ -25,9 +22,7 @@ This script ensures correct text display on LED matrices, regardless of language
 2. Configure the AppDaemon script with your media player and sensor entities.
 3. (Optional) For enhanced font support, consider EspHoMaTriXv2 firmware.
 
-
-
-## Essential Components:
+## Essential Components (in this example for Ulanzi Clock):
 1. LED matrix (e.g., Ulanzi clock) https://a.aliexpress.com/_olGoYGb
 2. EspHoMaTriXv2 firmware (https://github.com/lubeda/EspHoMaTriXv2)
 3. Home Assistant (with add-ons)
