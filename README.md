@@ -74,7 +74,7 @@ import re
 import bidi
 import time
 from appdaemon.plugins.hass import hassapi as hass
-from bidi.algorithm import get_display
+from bidi import get_display
 from unidecode import unidecode
 
 PLAYER = "media_player.era300"
